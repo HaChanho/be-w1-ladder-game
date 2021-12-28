@@ -12,10 +12,10 @@ public class Ladder {
         this.width = numPeople - WIDTH_CORRECTION;
         this.height = ladderHeight;
         this.bridges = new boolean[height][width];
-        initializeBridge();
+        initializeBridges();
     }
 
-    private void initializeBridge() {
+    private void initializeBridges() {
         for (int h = 0; h < height; h++) {
             initializeRow(h);
         }
