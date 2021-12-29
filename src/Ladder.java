@@ -1,48 +1,25 @@
-import java.util.Random;
-import java.util.StringJoiner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ladder {
     private static final int WIDTH_CORRECTION = 1;
+    private static final String SPACE = "  ";
+    private static final String NEW_LINE = "\n";
 
-    private final int width;
-    private final int height;
-    private final boolean[][] bridges;
+    private final List<LadderRow> bridges = new ArrayList<>();
 
     public Ladder(int numPeople, int ladderHeight) {
-        this.width = numPeople - WIDTH_CORRECTION;
-        this.height = ladderHeight;
-        this.bridges = new boolean[height][width];
-        initializeBridges();
-    }
-
-    private void initializeBridges() {
-        for (int h = 0; h < height; h++) {
-            initializeRow(h);
-        }
-    }
-
-    private void initializeRow(int rowIdx) {
-        final Random RANDOM = new Random();
-
-        for (int w = 0; w < width; w++) {
-            bridges[rowIdx][w] = RANDOM.nextBoolean();
+        for (int h = 0; h < ladderHeight; h++) {
+            bridges.add(new LadderRow(numPeople - WIDTH_CORRECTION));
         }
     }
 
     @Override
     public String toString() {
         StringBuilder ladder = new StringBuilder();
-        for (int h = 0; h < height; h++) {
-            ladder.append(buildRow(h)).append("\n");
+        for (LadderRow line : bridges) {
+            ladder.append(SPACE).append(line).append(NEW_LINE);
         }
         return ladder.toString();
-    }
-
-    private String buildRow(int rowIdx) {
-        StringJoiner row = new StringJoiner("|", "|", "|");
-        for (int w = 0; w < width; w++) {
-            row.add(bridges[rowIdx][w] ? "-" : " ");
-        }
-        return row.toString();
     }
 }
