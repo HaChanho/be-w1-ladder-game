@@ -1,22 +1,36 @@
 package ladder.domain;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Ladder {
-    private static final int WIDTH_CORRECTION = 1;
+    private static final int FIRST_INDEX = 0;
 
-    private final List<LadderRow> bridges;
+    private final List<LadderRow> ladder;
 
-    public Ladder(int numPeople, int ladderHeight) {
-        RandomBridgeBuilder randomBridgeBuilder = new RandomBridgeBuilder();
-        bridges = Stream.generate(() -> new LadderRow(randomBridgeBuilder.getRandomLadderRow(numPeople - WIDTH_CORRECTION)))
-                .limit(ladderHeight)
-                .collect(Collectors.toList());
+    public Ladder(List<LadderRow> ladder) {
+        this.ladder = ladder;
     }
 
     public List<LadderRow> getLadder() {
-        return bridges;
+        return Collections.unmodifiableList(ladder);
+    }
+
+    public int getLadderHeight() {
+        return ladder.size();
+    }
+
+    public boolean isPossibleMovingLeft(int row, int col) {
+        if (col == FIRST_INDEX) {
+            return false;
+        }
+        return ladder.get(row).isExistBridge(col - 1);
+    }
+
+    public boolean isPossibleMovingRight(int row, int col) {
+        if (col == ladder.get(row).getLadderRow().size()) {
+            return false;
+        }
+        return ladder.get(row).isExistBridge(col);
     }
 }

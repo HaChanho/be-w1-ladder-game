@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static ladder.LadderGame.MAX_NAME_LENGTH;
+import static ladder.LadderGame.SPACE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserInterfaceTest {
+class GameResultPrinterTest {
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     final PrintStream standardOut = System.out;
 
@@ -29,7 +31,7 @@ class UserInterfaceTest {
     @Test
     void printUserInfo() {
         // given
-        final UserInterface ui = new UserInterface();
+        final GameResultPrinter gameResultPrinter = new GameResultPrinter();
         List<String> users = new ArrayList<>() {
             {
                 add("TalkServer");
@@ -40,11 +42,11 @@ class UserInterfaceTest {
         };
 
         // when
-        Runnable c = () -> ui.printUserInfo(users);
+        Runnable c = () -> gameResultPrinter.printUserInfo(users);
         c.run();
-        String[] userNames = outputStreamCaptor.toString().split(UserInterface.SPACE);
+        String[] userNames = outputStreamCaptor.toString().split(SPACE);
 
         // then
-        assertThat(Arrays.stream(userNames).allMatch(name -> name.length() <= UserInterface.MAX_NUM_STRING)).isTrue();
+        assertThat(Arrays.stream(userNames).allMatch(name -> name.length() <= MAX_NAME_LENGTH)).isTrue();
     }
 }

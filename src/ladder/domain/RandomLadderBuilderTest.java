@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RandomBridgeBuilderTest {
+class RandomLadderBuilderTest {
 
     @Test
     void getRandomBridge() {
         // given
-        final boolean preBridge = RandomBridgeBuilder.preBridge;
-        final RandomBridgeBuilder randomBridgeBuilder = new RandomBridgeBuilder();
+        final RandomLadderBuilder randomBridgeBuilder = new RandomLadderBuilder();
+        final boolean preBridge = randomBridgeBuilder.getPreBridge();
 
         // when
         final boolean curBridge = randomBridgeBuilder.getRandomBridge();

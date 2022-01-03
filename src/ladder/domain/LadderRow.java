@@ -1,5 +1,6 @@
 package ladder.domain;
 
+import java.util.Collections;
 import java.util.List;
 
 public class LadderRow {
@@ -10,6 +11,10 @@ public class LadderRow {
     }
 
     public List<Boolean> getLadderRow() {
-        return row;
+        return Collections.unmodifiableList(row);
+    }
+
+    public boolean isExistBridge(int rowIdx) {
+        return row.get(rowIdx);
     }
 }
