@@ -1,5 +1,6 @@
 package ladder;
 
+import ladder.domain.GameResult;
 import ladder.domain.GameSimulator;
 import ladder.domain.Ladder;
 import ladder.domain.RandomLadderBuilder;
@@ -7,11 +8,16 @@ import ladder.view.CommandScanner;
 import ladder.view.GameInfoScanner;
 import ladder.view.GameResultPrinter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 
 public class LadderGame {
     public static final int MAX_NAME_LENGTH = 5;
     public static final String SPACE = " ";
+    private static final String END_COMMAND = "춘식이";
+    private static final String ALL_COMMAND = "all";
 
     private final List<String> userList;
     private final List<String> resultList;
@@ -34,17 +40,39 @@ public class LadderGame {
     }
 
     private void run(Ladder ladder) {
-        GameSimulator gameSimulator = new GameSimulator(ladder);
-        Map<String, String> resultMap = gameSimulator.getLadderResultMap(userList, resultList);
+        GameSimulator gameSimulator = new GameSimulator();
+        GameResult gameResult = new GameResult(gameSimulator.getLadderGameResultList(this, ladder));
         GameResultPrinter gameResultPrinter = new GameResultPrinter();
         gameResultPrinter.printLadderGame(this, ladder);
 
         boolean continued = true;
         while (continued) {
-            CommandScanner commandScanner = new CommandScanner();
-            String command = commandScanner.getCommand();
-            continued = gameResultPrinter.printGameResult(resultMap, command);
+            continued = processCommand(gameResultPrinter, gameResult);
         }
+        gameResultPrinter.printGameEnd();
+    }
+
+    private boolean processCommand(GameResultPrinter gameResultPrinter, GameResult gameResult) {
+        String command = new CommandScanner().getCommand();
+        if (isEndCommand(command)) {
+            return false;
+        }
+        System.out.println("\n실행 결과");
+        if (isAllCommand(command)) {
+            gameResultPrinter.printResultAll(userList, gameResult);
+            return true;
+        }
+
+        gameResultPrinter.printResultOne(userList, gameResult, command);
+        return true;
+    }
+
+    private boolean isEndCommand(String command) {
+        return command.equals(END_COMMAND);
+    }
+
+    private boolean isAllCommand(String command) {
+        return command.equals(ALL_COMMAND);
     }
 
     public List<String> getUserList() {

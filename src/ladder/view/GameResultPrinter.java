@@ -1,11 +1,11 @@
 package ladder.view;
 
 import ladder.LadderGame;
+import ladder.domain.GameResult;
 import ladder.domain.Ladder;
 import ladder.domain.LadderRow;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ladder.LadderGame.MAX_NAME_LENGTH;
@@ -19,9 +19,6 @@ public class GameResultPrinter {
     private static final String NULL_SPACE = "";
     private static final String EMPTY_SPACE = "  ";
     private static final String NEW_LINE = "\n";
-
-    private static final String END_COMMAND = "춘식이";
-    private static final String ALL_COMMAND = "all";
 
     public void printLadderGame(LadderGame ladderGame, Ladder ladder) {
         System.out.println("\n사다리 결과\n");
@@ -63,22 +60,16 @@ public class GameResultPrinter {
         System.out.println("\n");
     }
 
-    public boolean printGameResult(Map<String, String> resultMap, String command) {
-        if (command.equals(END_COMMAND)) {
-            System.out.println("\n게임을 종료합니다.");
-            return false;
-        } else if (command.equals(ALL_COMMAND)) {
-            printResultAll(resultMap);
-            return true;
-        }
-
-        System.out.println("\n실행 결과\n" + resultMap.getOrDefault(command, "") + "\n");
-        return true;
+    public void printResultOne(List<String> userList, GameResult gameResult, String command) {
+        System.out.println(gameResult.getResultOf(userList.indexOf(command)) + "\n");
     }
 
-    private void printResultAll(Map<String, String> resultMap) {
-        System.out.println("\n실행 결과");
-        resultMap.forEach((user, result) -> System.out.println(user + " : " + result));
+    public void printResultAll(List<String> userList, GameResult gameResult) {
+        userList.forEach(user -> System.out.println(user + " : " + gameResult.getResultOf(userList.indexOf(user))));
         System.out.println();
+    }
+
+    public void printGameEnd() {
+        System.out.println("\n게임을 종료합니다.");
     }
 }
